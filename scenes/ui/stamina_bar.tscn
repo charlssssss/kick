@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1yowro3i14qa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2q8hg"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_208gx"]
+bg_color = Color(0.27451, 0.454902, 0.92549, 1)
+
+[node name="StaminaBar" type="ProgressBar"]
+offset_right = 18.0
+offset_bottom = 2.0
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_2q8hg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_208gx")
+value = 80.0
+show_percentage = false

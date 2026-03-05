@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+.godot/uid/
+**/.import/
+*.import
+export.cfg
+export_presets.cfg
+*.godot/tmp/
+*.tmp
+*.gd.uid
