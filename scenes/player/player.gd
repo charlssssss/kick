@@ -5,15 +5,19 @@ signal game_over
 
 @export var animation: AnimatedSprite2D
 @export var move_state_machine: MoveStateMachine
+@export var floating_text_scene: PackedScene
+@export var blood_effect_scene: PackedScene
+
+@export var health_bar: ProgressBar
 @export var stamina_bar: ProgressBar
 
 @export var health: int = 100
-
 @export var max_stamina: float = 100.0
 @export var stamina: float = 100.0
 
 @export var push_area: Area2D
 @export var push_force: float = 500.0
+@export var push_damage: float = 10.0
 
 @export var sprint_drain_rate: float = 30.0
 @export var stamina_recovery_rate: float = 20.0
@@ -27,7 +31,13 @@ var was_full_stamina := true
 var drain_stamina_timer: float = 0.0
 var exhaust_delay: float = 2.0 
 
+var damage_cooldown: float = 0.0
+
+var bloody_timer: float = 0.0
+var has_bloody_footprint:= false
+
 func _ready() -> void:
+	health_bar.init_health(health)
 	stamina_bar.max_value = max_stamina
 	stamina_bar.value = stamina
 	stamina_bar.visible = false
@@ -53,6 +63,14 @@ func _physics_process(delta: float) -> void:
 	
 	if is_player_exhausted:
 		move_state_machine.transition_to("exhaust")
+	
+	if damage_cooldown > 0:
+		damage_cooldown -= delta
+		
+	if bloody_timer > 0:
+		bloody_timer -= delta
+	elif has_bloody_footprint:
+		has_bloody_footprint = false
 
 func push_bodies() -> void:
 	var bodies = push_area.get_overlapping_bodies()
@@ -70,7 +88,10 @@ func push_bodies() -> void:
 		
 		if body is CharacterBody2D:
 			body.velocity += direction * push_force_with_stamina
-		
+			
+			if body.has_method("take_damage"):
+				var push_damage_with_stamina = push_damage * (stamina / 100.0)
+				body.take_damage(push_damage_with_stamina, self)
 		elif body is RigidBody2D:
 			body.apply_impulse(direction * push_force_with_stamina)
 	
@@ -117,3 +138,38 @@ func is_exhausted(delta: float) -> bool:
 		drain_stamina_timer = 0.0
 	
 	return drain_stamina_timer >= exhaust_delay and move_state_machine.current_state.name != "Exhaust" and (Input.is_action_pressed("sprint") or Input.is_action_just_pressed("push"))
+
+func take_damage(damage: int,  attack_speed: float, enemy_body: CharacterBody2D, attack_callback: Callable) -> void:
+	if health > 0:
+		if damage_cooldown > 0:
+			return
+		
+		health -= damage
+		health_bar.health = health
+		
+		spawn_blood(enemy_body)
+		show_floating_text(damage)
+		attack_callback.call()
+		
+		damage_cooldown = attack_speed
+	else:
+		game_over.emit()
+
+func show_floating_text(damage: int) -> void:
+	var text_node = floating_text_scene.instantiate()
+	text_node.position = global_position
+	text_node.text = str(damage)
+	
+	get_tree().current_scene.add_child(text_node)
+
+func spawn_blood(enemy_body: CharacterBody2D):
+	var blood = blood_effect_scene.instantiate()
+	get_tree().current_scene.add_child(blood)
+	
+	blood.position = global_position
+	blood.rotation = enemy_body.global_position.angle_to_point(global_position)
+	blood.emitting = true
+
+func make_footprint_bloody(bloody_duration: float) -> void:
+	bloody_timer = max(bloody_duration, bloody_timer)
+	has_bloody_footprint = true

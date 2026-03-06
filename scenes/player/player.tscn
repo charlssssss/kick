@@ -1,15 +1,18 @@
-[gd_scene load_steps=35 format=3 uid="uid://dcsx42n8sdfrd"]
+[gd_scene load_steps=38 format=3 uid="uid://dcsx42n8sdfrd"]
 
 [ext_resource type="Texture2D" uid="uid://kf0tbl6fyxp" path="res://assets/sprites/jett-idle.png" id="1_dovo2"]
 [ext_resource type="Script" uid="uid://blvm8v177dmcj" path="res://scenes/player/player.gd" id="1_gmlin"]
 [ext_resource type="Texture2D" uid="uid://bvuit4q1oqi56" path="res://assets/sprites/jett-run.png" id="2_gmlin"]
 [ext_resource type="Texture2D" uid="uid://bls2lsmy7fol1" path="res://assets/sprites/jett-exhausted.png" id="2_h17s1"]
+[ext_resource type="PackedScene" uid="uid://dtwb6cax7u71h" path="res://scenes/ui/floating_text/floating_text.tscn" id="2_je7p5"]
+[ext_resource type="PackedScene" uid="uid://cgrq7pryqyo0n" path="res://scenes/effects/blood/blood.tscn" id="3_fm80t"]
 [ext_resource type="Script" uid="uid://dptmt257hhux8" path="res://scripts/systems/state_machine/move_state_machine/MoveStateMachine.gd" id="4_75vfm"]
 [ext_resource type="Script" uid="uid://curjbadqvnf0j" path="res://scripts/systems/state_machine/move_state_machine/states/Idle.gd" id="5_0owmy"]
 [ext_resource type="Script" uid="uid://dp4pe7hiugwj0" path="res://scripts/systems/state_machine/move_state_machine/states/Run.gd" id="6_qek5x"]
-[ext_resource type="Script" uid="uid://cbb2j06ijl2iv" path="res://scripts/systems/state_machine/move_state_machine/states/Push.gd" id="7_0owmy"]
 [ext_resource type="Script" uid="uid://t64s745gveui" path="res://scripts/systems/state_machine/move_state_machine/states/Exhaust.gd" id="8_5gtgg"]
-[ext_resource type="PackedScene" uid="uid://b1yowro3i14qa" path="res://scenes/ui/stamina_bar.tscn" id="8_qek5x"]
+[ext_resource type="PackedScene" uid="uid://b1yowro3i14qa" path="res://scenes/ui/stamina_bar/stamina_bar.tscn" id="8_qek5x"]
+[ext_resource type="PackedScene" uid="uid://dnqepj0ieskh0" path="res://scenes/effects/blood_footprint/blood_footprint.tscn" id="10_gx1jg"]
+[ext_resource type="PackedScene" uid="uid://d3k7m8swo1wkh" path="res://scenes/ui/health_bar/health_bar.tscn" id="11_je7p5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gx1jg"]
 atlas = ExtResource("2_h17s1")
@@ -133,6 +136,36 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
 }],
 "loop": false,
 "name": &"exhaust",
@@ -183,18 +216,22 @@ height = 24.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_qek5x"]
 radius = 31.0161
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation", "move_state_machine", "stamina_bar", "push_area")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation", "move_state_machine", "health_bar", "stamina_bar", "push_area")]
 z_index = 2
 collision_mask = 7
 script = ExtResource("1_gmlin")
 animation = NodePath("AnimatedSprite2D")
 move_state_machine = NodePath("MoveStateMachine")
+floating_text_scene = ExtResource("2_je7p5")
+blood_effect_scene = ExtResource("3_fm80t")
+health_bar = NodePath("HealthBar")
 stamina_bar = NodePath("StaminaBar")
 push_area = NodePath("PushArea")
+push_damage = 50.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gx1jg")
-animation = &"exhaust"
+animation = &"run"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -217,15 +254,14 @@ initial_state = NodePath("Idle")
 script = ExtResource("5_0owmy")
 animation_name = "idle"
 
-[node name="Run" type="Node" parent="MoveStateMachine"]
+[node name="Run" type="Node" parent="MoveStateMachine" node_paths=PackedStringArray("left_foot_marker", "right_foot_marker")]
 script = ExtResource("6_qek5x")
+blood_footprint_scene = ExtResource("10_gx1jg")
+left_foot_marker = NodePath("../../LeftFootMarker")
+right_foot_marker = NodePath("../../RightFootMarker")
 animation_name = "run"
 sprint_speed = 300.0
 walk_speed = 100.0
-
-[node name="Push" type="Node" parent="MoveStateMachine"]
-script = ExtResource("7_0owmy")
-animation_name = "idle"
 
 [node name="Exhaust" type="Node" parent="MoveStateMachine"]
 script = ExtResource("8_5gtgg")
@@ -234,8 +270,20 @@ animation_name = "exhaust"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
+[node name="HealthBar" parent="." instance=ExtResource("11_je7p5")]
+offset_left = -9.0
+offset_top = -16.0
+offset_right = 9.0
+offset_bottom = -14.0
+
 [node name="StaminaBar" parent="." instance=ExtResource("8_qek5x")]
 offset_left = -9.0
-offset_top = 20.0
+offset_top = -14.0
 offset_right = 9.0
-offset_bottom = 22.0
+offset_bottom = -12.0
+
+[node name="LeftFootMarker" type="Marker2D" parent="."]
+position = Vector2(-9, 16)
+
+[node name="RightFootMarker" type="Marker2D" parent="."]
+position = Vector2(8, 16)

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtwb6cax7u71h"]
+
+[ext_resource type="FontFile" uid="uid://b1smv8v7sh3r0" path="res://assets/fonts/m5x7.ttf" id="1_0qskq"]
+[ext_resource type="Script" uid="uid://c8c38w3sflxnf" path="res://scenes/ui/floating_text/floating_text.gd" id="2_x405i"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_482db"]
+
+[node name="FloatingText" type="Label"]
+z_index = 2
+offset_left = 8.0
+offset_right = 19.0
+offset_bottom = 13.0
+theme_override_fonts/font = ExtResource("1_0qskq")
+text = "0 "
+label_settings = SubResource("LabelSettings_482db")
+script = ExtResource("2_x405i")

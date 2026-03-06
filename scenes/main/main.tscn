@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://csxycwbm7gut3"]
+[gd_scene load_steps=9 format=3 uid="uid://csxycwbm7gut3"]
 
 [ext_resource type="PackedScene" uid="uid://dcsx42n8sdfrd" path="res://scenes/player/player.tscn" id="1_hyk8p"]
 [ext_resource type="Script" uid="uid://cqg010ccjke6u" path="res://scenes/main/main.gd" id="1_ow5a4"]
@@ -10,9 +10,13 @@
 [sub_resource type="LabelSettings" id="LabelSettings_6q06x"]
 font = ExtResource("4_l3cfh")
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("score_label")]
+[sub_resource type="LabelSettings" id="LabelSettings_ow5a4"]
+font = ExtResource("4_l3cfh")
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("game_over_screen", "score_label")]
 script = ExtResource("1_ow5a4")
-score_label = NodePath("CanvasLayer/MarginContainer/Label")
+game_over_screen = NodePath("GameOverScreen")
+score_label = NodePath("Hud/MarginContainer/Label")
 
 [node name="Player" parent="." instance=ExtResource("1_hyk8p")]
 position = Vector2(137, 154)
@@ -86,9 +90,13 @@ position = Vector2(-59, 308)
 [node name="Ball20" parent="." instance=ExtResource("2_iuonh")]
 position = Vector2(-55, 376)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Goal" parent="." node_paths=PackedStringArray("main_ui") instance=ExtResource("6_hujxm")]
+position = Vector2(264, 295)
+main_ui = NodePath("..")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="Hud" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="Hud"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -98,12 +106,59 @@ offset_right = -7.0
 offset_bottom = 17.0
 grow_horizontal = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer"]
+[node name="Label" type="Label" parent="Hud/MarginContainer"]
 layout_mode = 2
 text = "score: 0"
 label_settings = SubResource("LabelSettings_6q06x")
 horizontal_alignment = 2
 
-[node name="Goal" parent="." node_paths=PackedStringArray("main_ui") instance=ExtResource("6_hujxm")]
-position = Vector2(264, 295)
-main_ui = NodePath("..")
+[node name="GameOverScreen" type="CanvasLayer" parent="."]
+process_mode = 2
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="GameOverScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.635294)
+
+[node name="GameOverLabel" type="Label" parent="GameOverScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -37.0
+offset_right = 28.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_ow5a4")
+
+[node name="PlayAgainButton" type="Button" parent="GameOverScreen/ColorRect"]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 128.0
+offset_right = 237.0
+offset_bottom = 149.0
+theme_override_fonts/font = ExtResource("4_l3cfh")
+text = "Play Again"
+
+[node name="QuitButton" type="Button" parent="GameOverScreen/ColorRect"]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 128.0
+offset_right = 305.0
+offset_bottom = 149.0
+theme_override_fonts/font = ExtResource("4_l3cfh")
+text = "Quit
+"
+
+[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
+[connection signal="pressed" from="GameOverScreen/ColorRect/PlayAgainButton" to="." method="_on_play_again_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/ColorRect/QuitButton" to="." method="_on_quit_button_pressed"]

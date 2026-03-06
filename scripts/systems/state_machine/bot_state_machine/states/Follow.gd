@@ -25,3 +25,10 @@ func follow_enemy() -> void:
 
 func _on_bot_follow_range_body_exited(_body: Node2D) -> void:
 	transitioned.emit(self, "wander", null)
+
+
+func _on_attack_range_body_entered(body: Node2D) -> void:
+	if !body is CharacterBody2D:
+		return
+	
+	transitioned.emit(self, "attack", body)

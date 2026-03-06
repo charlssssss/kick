@@ -23,7 +23,7 @@ func process_physics(_delta: float) -> void:
 	for i in range(char_body.get_slide_collision_count()):
 		var collision = char_body.get_slide_collision(i)
 		var collider = collision.get_collider()
-
+		
 		if collider is RigidBody2D and not pushed_bodies.has(collider):
 			var push_dir = -collision.get_normal()
 			var target_velocity = push_dir * 300

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnqepj0ieskh0"]
+
+[ext_resource type="Texture2D" uid="uid://cbcohcn4da6gy" path="res://assets/sprites/blood-footprint.png" id="1_owolc"]
+[ext_resource type="Script" uid="uid://c7nf1syg0htap" path="res://scenes/effects/blood_footprint/blood_footprint.gd" id="1_sld18"]
+
+[node name="BloodFootprint" type="Node2D"]
+script = ExtResource("1_sld18")
+
+[node name="AnimatedSprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_owolc")

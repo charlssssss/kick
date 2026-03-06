@@ -1,13 +1,96 @@
-[gd_scene load_steps=25 format=3 uid="uid://cuh54emf4xqi2"]
+[gd_scene load_steps=52 format=3 uid="uid://cuh54emf4xqi2"]
 
 [ext_resource type="Texture2D" uid="uid://5q8cw60quq5p" path="res://assets/sprites/brim-idle.png" id="1_dj0qi"]
 [ext_resource type="Script" uid="uid://c88q35xugeo4m" path="res://scripts/bots/bot_brim/bot_brim.gd" id="1_oreif"]
 [ext_resource type="Script" uid="uid://divcibrm8i11j" path="res://scripts/systems/state_machine/bot_state_machine/BotStateMachine.gd" id="2_maa35"]
+[ext_resource type="Texture2D" uid="uid://cm4tatl881wp8" path="res://assets/sprites/brim-kick.png" id="2_ml6gv"]
+[ext_resource type="PackedScene" uid="uid://dtwb6cax7u71h" path="res://scenes/ui/floating_text/floating_text.tscn" id="2_nfyrt"]
 [ext_resource type="Texture2D" uid="uid://v7aj3okkgpmx" path="res://assets/sprites/brim-run.png" id="3_3ubmi"]
 [ext_resource type="Script" uid="uid://bcu5kpipa7vl6" path="res://scripts/systems/state_machine/bot_state_machine/states/Follow.gd" id="3_oreif"]
 [ext_resource type="Texture2D" uid="uid://bv8goeeljrapb" path="res://assets/sprites/brim-knockback.png" id="3_v4lpc"]
+[ext_resource type="PackedScene" uid="uid://cgrq7pryqyo0n" path="res://scenes/effects/blood/blood.tscn" id="3_vd8r6"]
 [ext_resource type="Script" uid="uid://dm26hfny28cvn" path="res://scripts/systems/state_machine/bot_state_machine/states/Wander.gd" id="4_3ubmi"]
+[ext_resource type="Texture2D" uid="uid://dpt0mw1k70kpd" path="res://assets/sprites/brim-death.png" id="5_inf7c"]
 [ext_resource type="Script" uid="uid://ccu4b7osouadp" path="res://scripts/systems/state_machine/bot_state_machine/states/Knockback.gd" id="7_nyhaf"]
+[ext_resource type="Script" uid="uid://56toq26h6wlg" path="res://scripts/systems/state_machine/bot_state_machine/states/Attack.gd" id="10_18ntg"]
+[ext_resource type="PackedScene" uid="uid://d3k7m8swo1wkh" path="res://scenes/ui/health_bar/health_bar.tscn" id="11_utjcg"]
+[ext_resource type="Script" uid="uid://cw6od4vqkb610" path="res://scripts/systems/state_machine/bot_state_machine/states/Death.gd" id="14_qk3f4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lm0f"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1wk6"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssvbd"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ronxs"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1o27d"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tu8pp"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eb33"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gcco7"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqtcw"]
+atlas = ExtResource("2_ml6gv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2r753"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 0, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lgeo"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 32, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uoiq7"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 64, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ha4c"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 96, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfl67"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 128, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_856f5"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 160, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w455d"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 192, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcth8"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 224, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_minee"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 256, 64, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3323"]
+atlas = ExtResource("5_inf7c")
+region = Rect2(0, 288, 64, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q7fns"]
 atlas = ExtResource("1_dj0qi")
@@ -63,6 +146,73 @@ region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oreif"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0lm0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1wk6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ssvbd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ronxs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1o27d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tu8pp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1eb33")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gcco7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqtcw")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2r753")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lgeo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uoiq7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ha4c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfl67")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_856f5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w455d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcth8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_minee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3323")
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_q7fns")
@@ -125,19 +275,25 @@ height = 24.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyhaf"]
 radius = 95.0053
 
-[node name="BotBrim" type="CharacterBody2D" node_paths=PackedStringArray("animation", "bot_state_machine")]
-z_index = 1
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_18ntg"]
+radius = 8.0
+height = 26.0
+
+[node name="BotBrim" type="CharacterBody2D" node_paths=PackedStringArray("animation", "bot_state_machine", "health_bar")]
+z_index = 2
 collision_layer = 4
 collision_mask = 263
 script = ExtResource("1_oreif")
 animation = NodePath("AnimatedSprite2D")
 bot_state_machine = NodePath("BotStateMachine")
+health_bar = NodePath("HealthBar")
+floating_text_scene = ExtResource("2_nfyrt")
+blood_effect_scene = ExtResource("3_vd8r6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_oreif")
-animation = &"knockback"
+animation = &"attack"
 autoplay = "idle"
-frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 4
@@ -151,6 +307,13 @@ shape = SubResource("CapsuleShape2D_oreif")
 position = Vector2(0, 5)
 shape = SubResource("CircleShape2D_nyhaf")
 debug_color = Color(0.147418, 0.62807, 0.431669, 0.42)
+
+[node name="AttackRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_18ntg")
+debug_color = Color(0.942133, 0.302659, 0.398439, 0.42)
 
 [node name="BotStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_maa35")
@@ -172,5 +335,23 @@ duration = 0.35
 bot_follow_range = NodePath("../../BotFollowRange")
 animation_name = "knockback"
 
+[node name="Attack" type="Node" parent="BotStateMachine"]
+script = ExtResource("10_18ntg")
+damage = 5
+attack_speed = 1.0
+animation_name = "idle"
+
+[node name="Death" type="Node" parent="BotStateMachine"]
+script = ExtResource("14_qk3f4")
+animation_name = "death"
+
+[node name="HealthBar" parent="." instance=ExtResource("11_utjcg")]
+offset_left = -9.0
+offset_top = -15.0
+offset_right = 9.0
+offset_bottom = -13.0
+
 [connection signal="body_entered" from="BotFollowRange" to="BotStateMachine/Wander" method="_on_bot_follow_range_body_entered"]
 [connection signal="body_exited" from="BotFollowRange" to="BotStateMachine/Follow" method="_on_bot_follow_range_body_exited"]
+[connection signal="body_entered" from="AttackRange" to="BotStateMachine/Follow" method="_on_attack_range_body_entered"]
+[connection signal="body_shape_exited" from="AttackRange" to="BotStateMachine/Attack" method="_on_attack_range_body_shape_exited"]
