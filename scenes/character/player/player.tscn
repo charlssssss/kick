@@ -1,0 +1,92 @@
+[gd_scene load_steps=14 format=3 uid="uid://dcsx42n8sdfrd"]
+
+[ext_resource type="Script" uid="uid://blvm8v177dmcj" path="res://scenes/character/player/player.gd" id="1_gmlin"]
+[ext_resource type="PackedScene" uid="uid://dtwb6cax7u71h" path="res://scenes/ui/floating_text/floating_text.tscn" id="2_je7p5"]
+[ext_resource type="PackedScene" uid="uid://cgrq7pryqyo0n" path="res://scenes/effects/blood/blood.tscn" id="3_fm80t"]
+[ext_resource type="Script" uid="uid://dptmt257hhux8" path="res://scripts/systems/state_machine/move_state_machine/MoveStateMachine.gd" id="4_75vfm"]
+[ext_resource type="Script" uid="uid://curjbadqvnf0j" path="res://scripts/systems/state_machine/move_state_machine/states/Idle.gd" id="5_0owmy"]
+[ext_resource type="Script" uid="uid://dp4pe7hiugwj0" path="res://scripts/systems/state_machine/move_state_machine/states/Run.gd" id="6_qek5x"]
+[ext_resource type="Script" uid="uid://t64s745gveui" path="res://scripts/systems/state_machine/move_state_machine/states/Exhaust.gd" id="8_5gtgg"]
+[ext_resource type="PackedScene" uid="uid://b1yowro3i14qa" path="res://scenes/ui/stamina_bar/stamina_bar.tscn" id="8_qek5x"]
+[ext_resource type="PackedScene" uid="uid://dnqepj0ieskh0" path="res://scenes/effects/blood_footprint/blood_footprint.tscn" id="10_gx1jg"]
+[ext_resource type="PackedScene" uid="uid://d3k7m8swo1wkh" path="res://scenes/ui/health_bar/health_bar.tscn" id="11_je7p5"]
+[ext_resource type="Script" uid="uid://bejx8l2bytb7h" path="res://scripts/systems/state_machine/move_state_machine/states/Plant.gd" id="12_ugbui"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_75vfm"]
+radius = 5.0
+height = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qek5x"]
+radius = 31.0161
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("move_state_machine", "push_area", "health_bar", "stamina_bar", "left_foot_marker", "right_foot_marker")]
+z_index = 2
+collision_mask = 1543
+script = ExtResource("1_gmlin")
+move_state_machine = NodePath("MoveStateMachine")
+push_area = NodePath("PushArea")
+health_bar = NodePath("HealthBar")
+stamina_bar = NodePath("StaminaBar")
+stamina = 100.0
+floating_text_scene = ExtResource("2_je7p5")
+blood_effect_scene = ExtResource("3_fm80t")
+blood_footprint_scene = ExtResource("10_gx1jg")
+left_foot_marker = NodePath("LeftFootMarker")
+right_foot_marker = NodePath("RightFootMarker")
+is_spike_carrier = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_75vfm")
+
+[node name="PushArea" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PushArea"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_qek5x")
+
+[node name="MoveStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_75vfm")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="MoveStateMachine"]
+script = ExtResource("5_0owmy")
+animation_name = "idle"
+
+[node name="Run" type="Node" parent="MoveStateMachine"]
+script = ExtResource("6_qek5x")
+animation_name = "run"
+sprint_speed = 200.0
+walk_speed = 100.0
+
+[node name="Exhaust" type="Node" parent="MoveStateMachine"]
+script = ExtResource("8_5gtgg")
+exhaust_time = 4.0
+animation_name = "exhaust"
+
+[node name="Plant" type="Node" parent="MoveStateMachine"]
+script = ExtResource("12_ugbui")
+animation_name = "exhaust"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+
+[node name="HealthBar" parent="." instance=ExtResource("11_je7p5")]
+offset_left = -9.0
+offset_top = -16.0
+offset_right = 9.0
+offset_bottom = -14.0
+
+[node name="StaminaBar" parent="." instance=ExtResource("8_qek5x")]
+offset_left = -9.0
+offset_top = -14.0
+offset_right = 9.0
+offset_bottom = -12.0
+
+[node name="LeftFootMarker" type="Marker2D" parent="."]
+position = Vector2(-9, 16)
+
+[node name="RightFootMarker" type="Marker2D" parent="."]
+position = Vector2(8, 16)

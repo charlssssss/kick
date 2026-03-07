@@ -7,6 +7,7 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0.27451, 0.454902, 0.92549, 1)
 
 [node name="StaminaBar" type="ProgressBar"]
+z_index = 1
 offset_right = 18.0
 offset_bottom = 2.0
 size_flags_vertical = 1

@@ -14,21 +14,12 @@ func process_frame(delta: float) -> void:
 		randomize_wander()
 	animation.flip_h = move_direction.x < 0
 
-func process_physics(_delta: float) -> void:
+func process_physics(delta: float) -> void:
 	char_body.velocity = move_direction * move_speed
 	char_body.move_and_slide()
 	
-	var pushed_bodies := {}
-
-	for i in range(char_body.get_slide_collision_count()):
-		var collision = char_body.get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider is RigidBody2D and not pushed_bodies.has(collider):
-			var push_dir = -collision.get_normal()
-			var target_velocity = push_dir * 300
-			collider.linear_velocity = collider.linear_velocity.lerp(target_velocity, 0.4)
-			pushed_bodies[collider] = true
+	char_body.apply_blood(delta)
+	char_body.apply_push_body_physics()
 
 
 func randomize_wander() -> void:

@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://csxycwbm7gut3"]
+[gd_scene load_steps=11 format=3 uid="uid://csxycwbm7gut3"]
 
-[ext_resource type="PackedScene" uid="uid://dcsx42n8sdfrd" path="res://scenes/player/player.tscn" id="1_hyk8p"]
 [ext_resource type="Script" uid="uid://cqg010ccjke6u" path="res://scenes/main/main.gd" id="1_ow5a4"]
 [ext_resource type="PackedScene" uid="uid://df2c4cyrno3u4" path="res://scenes/environment/ball/ball.tscn" id="2_iuonh"]
-[ext_resource type="PackedScene" uid="uid://cuh54emf4xqi2" path="res://scripts/bots/bot_brim/bot_brim.tscn" id="3_k2fmo"]
+[ext_resource type="PackedScene" uid="uid://dmv7q2prhv4wb" path="res://scenes/character/player/agents/jett/jett.tscn" id="2_yyfjg"]
+[ext_resource type="PackedScene" uid="uid://d1qljrr3crj1s" path="res://scenes/character/bots/agents/bot_brimstone/bot_brimstone.tscn" id="3_hujxm"]
 [ext_resource type="FontFile" uid="uid://b1smv8v7sh3r0" path="res://assets/fonts/m5x7.ttf" id="4_l3cfh"]
+[ext_resource type="PackedScene" uid="uid://din812dsg6ikl" path="res://scenes/character/bots/agents/bot_jett/bot_jett.tscn" id="4_yyfjg"]
 [ext_resource type="PackedScene" uid="uid://bnlnbgfsuu4mj" path="res://scenes/environment/goal/goal.tscn" id="6_hujxm"]
+[ext_resource type="PackedScene" uid="uid://d2qpwy7yfvmm0" path="res://scenes/environment/plant_site/plant_site.tscn" id="6_yyfjg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6q06x"]
 font = ExtResource("4_l3cfh")
@@ -18,17 +20,26 @@ script = ExtResource("1_ow5a4")
 game_over_screen = NodePath("GameOverScreen")
 score_label = NodePath("Hud/MarginContainer/Label")
 
-[node name="Player" parent="." instance=ExtResource("1_hyk8p")]
-position = Vector2(137, 154)
+[node name="Jett" parent="." instance=ExtResource("2_yyfjg")]
+position = Vector2(236, 177)
 
-[node name="BotBrim" parent="." instance=ExtResource("3_k2fmo")]
-position = Vector2(249, 63)
+[node name="BotBrimstone" parent="." instance=ExtResource("3_hujxm")]
+position = Vector2(406, 86)
 
-[node name="BotBrim2" parent="." instance=ExtResource("3_k2fmo")]
-position = Vector2(449, 12)
+[node name="BotBrimstone2" parent="." instance=ExtResource("3_hujxm")]
+position = Vector2(81, 47)
 
-[node name="BotBrim3" parent="." instance=ExtResource("3_k2fmo")]
-position = Vector2(48, 15)
+[node name="BotBrimstone3" parent="." instance=ExtResource("3_hujxm")]
+position = Vector2(412, 266)
+
+[node name="BotJett" parent="." instance=ExtResource("4_yyfjg")]
+position = Vector2(37, 253)
+
+[node name="BotJett2" parent="." instance=ExtResource("4_yyfjg")]
+position = Vector2(249, 40)
+
+[node name="BotJett3" parent="." instance=ExtResource("4_yyfjg")]
+position = Vector2(202, 338)
 
 [node name="Ball" parent="." instance=ExtResource("2_iuonh")]
 position = Vector2(425, 16)
@@ -39,59 +50,12 @@ position = Vector2(233, -4)
 [node name="Ball3" parent="." instance=ExtResource("2_iuonh")]
 position = Vector2(159, 4)
 
-[node name="Ball4" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(86, 60)
-
-[node name="Ball5" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(309, 2)
-
-[node name="Ball6" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(401, 490)
-
-[node name="Ball7" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(270, 507)
-
-[node name="Ball8" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(204, 546)
-
-[node name="Ball9" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(152, 481)
-
-[node name="Ball10" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(357, 536)
-
-[node name="Ball11" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(666, 140)
-
-[node name="Ball12" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(687, 255)
-
-[node name="Ball13" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(712, 322)
-
-[node name="Ball14" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(661, 371)
-
-[node name="Ball15" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(713, 194)
-
-[node name="Ball16" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(-115, 408)
-
-[node name="Ball17" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(-70, 162)
-
-[node name="Ball18" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(-77, 237)
-
-[node name="Ball19" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(-59, 308)
-
-[node name="Ball20" parent="." instance=ExtResource("2_iuonh")]
-position = Vector2(-55, 376)
-
 [node name="Goal" parent="." node_paths=PackedStringArray("main_ui") instance=ExtResource("6_hujxm")]
 position = Vector2(264, 295)
+main_ui = NodePath("..")
+
+[node name="PlantSite" parent="." node_paths=PackedStringArray("main_ui") instance=ExtResource("6_yyfjg")]
+position = Vector2(376, 293)
 main_ui = NodePath("..")
 
 [node name="Hud" type="CanvasLayer" parent="."]
@@ -159,6 +123,5 @@ theme_override_fonts/font = ExtResource("4_l3cfh")
 text = "Quit
 "
 
-[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
 [connection signal="pressed" from="GameOverScreen/ColorRect/PlayAgainButton" to="." method="_on_play_again_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/ColorRect/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2qpwy7yfvmm0"]
+
+[ext_resource type="Script" uid="uid://do2ij84v1e05s" path="res://scenes/environment/plant_site/plant_site.gd" id="1_1hsne"]
+[ext_resource type="Texture2D" uid="uid://dcovoqeaf60sw" path="res://assets/sprites/goal.png" id="2_tvnf6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_njq6f"]
+size = Vector2(80, 48)
+
+[node name="PlantSite" type="Area2D" node_paths=PackedStringArray("site_label")]
+z_index = -1
+collision_layer = 1024
+collision_mask = 5
+script = ExtResource("1_1hsne")
+site_label = NodePath("Label")
+site_string = "A Site"
+
+[node name="Label" type="Label" parent="."]
+z_index = 1
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 23.0
+offset_bottom = 14.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tvnf6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_njq6f")

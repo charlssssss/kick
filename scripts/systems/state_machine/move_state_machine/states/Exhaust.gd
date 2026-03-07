@@ -6,7 +6,7 @@ var timer: float
 func enter() -> void:
 	timer = exhaust_time
 	char_body.velocity = Vector2.ZERO
-	animation.play(animation_name)
+	super()
 
 func process_physics(delta):
 	timer -= delta
@@ -16,3 +16,4 @@ func process_physics(delta):
 
 	if timer <= 0:
 		transitioned.emit(self, "idle")
+		return

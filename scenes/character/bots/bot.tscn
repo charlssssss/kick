@@ -1,0 +1,105 @@
+[gd_scene load_steps=15 format=3 uid="uid://cuh54emf4xqi2"]
+
+[ext_resource type="Script" uid="uid://c88q35xugeo4m" path="res://scenes/character/bots/bot.gd" id="1_oreif"]
+[ext_resource type="Script" uid="uid://divcibrm8i11j" path="res://scripts/systems/state_machine/bot_state_machine/BotStateMachine.gd" id="2_maa35"]
+[ext_resource type="PackedScene" uid="uid://dtwb6cax7u71h" path="res://scenes/ui/floating_text/floating_text.tscn" id="2_nfyrt"]
+[ext_resource type="Script" uid="uid://bcu5kpipa7vl6" path="res://scripts/systems/state_machine/bot_state_machine/states/Follow.gd" id="3_oreif"]
+[ext_resource type="PackedScene" uid="uid://cgrq7pryqyo0n" path="res://scenes/effects/blood/blood.tscn" id="3_vd8r6"]
+[ext_resource type="Script" uid="uid://dm26hfny28cvn" path="res://scripts/systems/state_machine/bot_state_machine/states/Wander.gd" id="4_3ubmi"]
+[ext_resource type="PackedScene" uid="uid://dnqepj0ieskh0" path="res://scenes/effects/blood_footprint/blood_footprint.tscn" id="4_pax33"]
+[ext_resource type="Script" uid="uid://ccu4b7osouadp" path="res://scripts/systems/state_machine/bot_state_machine/states/Knockback.gd" id="7_nyhaf"]
+[ext_resource type="Script" uid="uid://56toq26h6wlg" path="res://scripts/systems/state_machine/bot_state_machine/states/Attack.gd" id="10_18ntg"]
+[ext_resource type="PackedScene" uid="uid://d3k7m8swo1wkh" path="res://scenes/ui/health_bar/health_bar.tscn" id="11_utjcg"]
+[ext_resource type="Script" uid="uid://cw6od4vqkb610" path="res://scripts/systems/state_machine/bot_state_machine/states/Death.gd" id="14_qk3f4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oreif"]
+radius = 5.0
+height = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nyhaf"]
+radius = 95.0053
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_18ntg"]
+radius = 9.0
+height = 26.0
+
+[node name="Bot" type="CharacterBody2D" node_paths=PackedStringArray("animation", "bot_state_machine", "health_bar", "left_foot_marker", "right_foot_marker")]
+z_index = 2
+collision_layer = 4
+collision_mask = 1799
+script = ExtResource("1_oreif")
+animation = NodePath("")
+bot_state_machine = NodePath("BotStateMachine")
+health_bar = NodePath("HealthBar")
+floating_text_scene = ExtResource("2_nfyrt")
+blood_effect_scene = ExtResource("3_vd8r6")
+blood_footprint_scene = ExtResource("4_pax33")
+left_foot_marker = NodePath("LeftFootMarker")
+right_foot_marker = NodePath("RightFootMarker")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 4
+visibility_layer = 7
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_oreif")
+
+[node name="BotFollowRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BotFollowRange"]
+position = Vector2(0, 5)
+shape = SubResource("CircleShape2D_nyhaf")
+debug_color = Color(0.147418, 0.62807, 0.431669, 0.42)
+
+[node name="AttackRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_18ntg")
+debug_color = Color(0.942133, 0.302659, 0.398439, 0.42)
+
+[node name="BotStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_maa35")
+initial_state = NodePath("Wander")
+
+[node name="Follow" type="Node" parent="BotStateMachine"]
+script = ExtResource("3_oreif")
+animation_name = "run"
+move_speed = 100.0
+
+[node name="Wander" type="Node" parent="BotStateMachine"]
+script = ExtResource("4_3ubmi")
+animation_name = "idle"
+move_speed = 30.0
+
+[node name="Knockback" type="Node" parent="BotStateMachine" node_paths=PackedStringArray("bot_follow_range")]
+script = ExtResource("7_nyhaf")
+duration = 0.35
+bot_follow_range = NodePath("../../BotFollowRange")
+animation_name = "knockback"
+
+[node name="Attack" type="Node" parent="BotStateMachine"]
+script = ExtResource("10_18ntg")
+damage = 50
+attack_speed = 1.0
+animation_name = "idle"
+
+[node name="Death" type="Node" parent="BotStateMachine"]
+script = ExtResource("14_qk3f4")
+animation_name = "death"
+
+[node name="HealthBar" parent="." instance=ExtResource("11_utjcg")]
+offset_left = -9.0
+offset_top = -15.0
+offset_right = 9.0
+offset_bottom = -13.0
+
+[node name="LeftFootMarker" type="Marker2D" parent="."]
+position = Vector2(-9, 16)
+
+[node name="RightFootMarker" type="Marker2D" parent="."]
+position = Vector2(8, 16)
+
+[connection signal="body_entered" from="BotFollowRange" to="BotStateMachine/Wander" method="_on_bot_follow_range_body_entered"]
+[connection signal="body_exited" from="BotFollowRange" to="BotStateMachine/Follow" method="_on_bot_follow_range_body_exited"]
+[connection signal="body_entered" from="AttackRange" to="BotStateMachine/Follow" method="_on_attack_range_body_entered"]
+[connection signal="body_shape_exited" from="AttackRange" to="BotStateMachine/Attack" method="_on_attack_range_body_shape_exited"]
